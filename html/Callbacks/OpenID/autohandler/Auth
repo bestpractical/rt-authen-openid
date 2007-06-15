@@ -59,7 +59,7 @@ if ( ( !$session{'CurrentUser'} ) && ($user) ) {
     # we've got a valid user, so try to load
     $session{'CurrentUser'} = RT::CurrentUser->new();
     $session{'CurrentUser'}->LoadByCols( Name => $user );
-    
+    $session{'CurrentUser'}->{'OpenID'} = 1;    
     if ( $session{'CurrentUser'}->id ) {
         $RT::Logger->info($session{'CurrentUser'}->Name ." logged in with openid"); 
     } else {
