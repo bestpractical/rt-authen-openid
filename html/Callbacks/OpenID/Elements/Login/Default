@@ -1,0 +1,12 @@
+
+
+<div class="input-row">
+<h3><&|/l&>Have an OpenID? Log in with it and have a look around.</&></h3>
+</div>
+    <span class="label"><&|/l&>OpenID</&>:</span>
+    <span class="input"><input name="openid" /></span>
+</div>
+
+<div class="button-row">
+    <span class="input"><input type="submit" class="button" value="<&|/l&>Login with OpenID</&>" /></span>
+</div>
