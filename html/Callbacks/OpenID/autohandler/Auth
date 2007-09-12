@@ -26,13 +26,17 @@ my $csr = Net::OpenID::Consumer->new(
 
 
 if ($openid_url) {
-    my $claimed_identity = $csr->claimed_identity("$openid_url");
-    $check_url = $claimed_identity->check_url(
-        return_to      => $RT::WebURL,
-        delayed_return => 1,
-        trust_root     => $RT::WebURL,
-    );
-    RT::Interface::Web::Redirect($check_url);
+    if ( my $claimed_identity = $csr->claimed_identity("$openid_url")) {
+        $check_url = $claimed_identity->check_url(
+                return_to      => $RT::WebURL,
+                delayed_return => 1,
+                trust_root     => $RT::WebURL,
+                );
+        RT::Interface::Web::Redirect($check_url);
+    } else {
+        $RT::Logger->error("OpenID login failure for $openid_url code $csr->{last_errcode} error $csr->{last_errlog}");
+        # we should end up skipping the rest now
+    }
 }
 if ( $ARGS{"openid.mode"} ) {
     if ( my $setup_url = $csr->user_setup_url ) {
