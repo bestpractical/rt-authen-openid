@@ -34,7 +34,7 @@ if ($openid_url) {
                 );
         RT::Interface::Web::Redirect($check_url);
     } else {
-        $RT::Logger->error("OpenID login failure for $openid_url code $csr->{last_errcode} error $csr->{last_errlog}");
+        $RT::Logger->error("OpenID login failure for $openid_url code $csr->{last_errcode} error $csr->{last_errtext}");
         # we should end up skipping the rest now
     }
 }
