@@ -1,5 +1,6 @@
-
-
+<%init>
+return unless ($RT::EnableOpenId);
+</%init>
 <div class="input-row">
 <h3><&|/l&>Have an OpenID? Log in with it and have a look around.</&></h3>
 </div>

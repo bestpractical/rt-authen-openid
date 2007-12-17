@@ -1,4 +1,5 @@
 <%INIT>
+return unless ($RT::EnableOpenId);
 use Net::OpenID::Consumer;
 use LWPx::ParanoidAgent;
 use Cache::FileCache;
