@@ -1,13 +1,27 @@
-name: RT-Authen-OpenID
-version: 0.01
-abstract: Allows RT to do authentication via a service which supports the OpenID API
-author: Artur Bergman <abergman@sixapart.com>
-license: GPL version 2
+---
+abstract: 'Allows RT to do authentication via a service which supports the OpenID API'
+author:
+  - 'Artur Bergman <sky@crucially.net>, Jesse Vincent <jesse@bestpractical.com>'
+build_requires:
+  ExtUtils::MakeMaker: 6.42
+configure_requires:
+  ExtUtils::MakeMaker: 6.42
 distribution_type: module
-requires:
-  Net::OpenID::Consumer: 0
+generated_by: 'Module::Install version 0.85'
+license: 'GPL version 2'
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: RT-Authen-OpenID
 no_index:
   directory:
     - html
     - inc
-generated_by: Module::Install version 0.34
+requires:
+  Cache::FileCache: 0
+  LWPx::ParanoidAgent: 0
+  Net::OpenID::Consumer: 0
+  perl: 5.8.0
+resources:
+  license: http://opensource.org/licenses/gpl-license.php
+version: 0.03
