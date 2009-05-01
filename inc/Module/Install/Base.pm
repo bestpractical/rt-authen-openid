@@ -1,57 +1,86 @@
-#line 1 "inc/Module/Install/Base.pm - /usr/share/perl5/Module/Install/Base.pm"
-# $File: //depot/cpan/Module-Install/lib/Module/Install/Base.pm $ $Author: autrijus $
-# $Revision: #10 $ $Change: 1847 $ $DateTime: 2003/12/31 23:14:54 $ vim: expandtab shiftwidth=4
-
+#line 1
 package Module::Install::Base;
 
-#line 31
+use strict 'vars';
+use vars qw{$VERSION};
+BEGIN {
+	$VERSION = '0.85';
+}
+
+# Suspend handler for "redefined" warnings
+BEGIN {
+	my $w = $SIG{__WARN__};
+	$SIG{__WARN__} = sub { $w };
+}
+
+### This is the ONLY module that shouldn't have strict on
+# use strict;
+
+#line 45
 
 sub new {
-    my ($class, %args) = @_;
+	my ($class, %args) = @_;
 
-    foreach my $method (qw(call load)) {
-        *{"$class\::$method"} = sub {
-            +shift->_top->$method(@_);
-        } unless defined &{"$class\::$method"};
-    }
+	foreach my $method ( qw(call load) ) {
+		next if defined &{"$class\::$method"};
+		*{"$class\::$method"} = sub {
+			shift()->_top->$method(@_);
+		};
+	}
 
-    bless(\%args, $class);
+	bless( \%args, $class );
 }
 
-#line 49
+#line 66
 
 sub AUTOLOAD {
-    my $self = shift;
-    goto &{$self->_top->autoload};
+	my $self = shift;
+	local $@;
+	my $autoload = eval {
+		$self->_top->autoload
+	} or return;
+	goto &$autoload;
 }
 
-#line 60
+#line 83
 
-sub _top { $_[0]->{_top} }
+sub _top {
+	$_[0]->{_top};
+}
 
-#line 71
+#line 98
 
 sub admin {
-    my $self = shift;
-    $self->_top->{admin} or Module::Install::Base::FakeAdmin->new;
+	$_[0]->_top->{admin}
+	or
+	Module::Install::Base::FakeAdmin->new;
 }
 
+#line 114
+
 sub is_admin {
-    my $self = shift;
-    $self->admin->VERSION;
+	$_[0]->admin->VERSION;
 }
 
 sub DESTROY {}
 
 package Module::Install::Base::FakeAdmin;
 
-my $Fake;
-sub new { $Fake ||= bless(\@_, $_[0]) }
+my $fake;
+
+sub new {
+	$fake ||= bless(\@_, $_[0]);
+}
+
 sub AUTOLOAD {}
+
 sub DESTROY {}
+
+# Restore warning handler
+BEGIN {
+	$SIG{__WARN__} = $SIG{__WARN__}->();
+}
 
 1;
 
-__END__
-
-#line 115
+#line 162
