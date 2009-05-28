@@ -10,4 +10,6 @@ requires        'Net::OpenID::Consumer';
 requires        'LWPx::ParanoidAgent';
 requires        'Cache::FileCache';
 
+auto_install();
+
 WriteAll();
