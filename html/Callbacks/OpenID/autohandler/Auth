@@ -1,5 +1,6 @@
 <%INIT>
 return unless ($RT::EnableOpenId);
+
 use Net::OpenID::Consumer;
 use LWPx::ParanoidAgent;
 use Cache::FileCache;
@@ -21,8 +22,8 @@ my $csr = Net::OpenID::Consumer->new(
     ua              => LWPx::ParanoidAgent->new,
     args            => \%ARGS,
     cache           => Cache::FileCache->new,
-    consumer_secret => $RT::DatabasePassword,
-    required_root => $RT::WebURL,
+    consumer_secret => 'x'.$RT::DatabasePassword,
+    required_root   => $RT::WebURL,
 );
 
 
