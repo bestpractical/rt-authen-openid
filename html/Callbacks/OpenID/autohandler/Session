@@ -54,7 +54,7 @@ if ( $ARGS{"openid.mode"} ) {
 }
 
 # if the user isn't logged in and we got credentials from OpenID, load them
-if ( ( !$session{'CurrentUser'} ) && ($user) ) {
+if ( ( not $session{'CurrentUser'} or not $session{'CurrentUser'}->id ) && ($user) ) {
 
     # set a global user so we know elsewhere we're using OpenID for auth
     $session{'OpenID'} = $user;
