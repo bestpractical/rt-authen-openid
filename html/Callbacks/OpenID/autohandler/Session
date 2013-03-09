@@ -36,7 +36,9 @@ if ($openid_url) {
                 );
         $m->redirect($check_url);
     } else {
-        RT->Logger->error("OpenID login failure for $openid_url code $csr->{last_errcode} error $csr->{last_errtext}");
+        RT->Logger->error("OpenID login failure for '$openid_url', code $csr->{last_errcode}, error $csr->{last_errtext}");
+        push @{$session{'Actions'}{''}}, loc("That doesn't look like a valid OpenID.  Double check your address?");
+
         # we should end up skipping the rest now
     }
 }
@@ -49,7 +51,8 @@ if ( $ARGS{"openid.mode"} ) {
     } elsif ( my $vident = $csr->verified_identity ) {
         $user = $vident->url;
     } else {
-        die ( "Error validating identity: " . $csr->err );
+        RT->Logger->error("Couldn't validate OpenID: ".$csr->err);
+        push @{$session{'Actions'}{''}}, loc("Error validating identity: [_1]", $csr->err);
     }
 }
 
@@ -91,7 +94,9 @@ if ( ( not $session{'CurrentUser'} or not $session{'CurrentUser'}->id ) && ($use
 
             # we couldn't create the user.  abort abort abort!
             delete $session{'CurrentUser'};
-            die( loc( "Cannot create user: [_1]", $msg ) );
+
+            RT->Logger->error("Couldn't create OpenID user '$user': $msg");
+            push @{$session{'Actions'}{''}}, loc( "Cannot create user: [_1]", $msg );
         }
     }
 }
