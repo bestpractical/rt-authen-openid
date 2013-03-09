@@ -34,7 +34,7 @@ if ($openid_url) {
                 delayed_return => 1,
                 trust_root     => RT->Config->Get("WebURL"),
                 );
-        RT::Interface::Web::Redirect($check_url);
+        $m->redirect($check_url);
     } else {
         RT->Logger->error("OpenID login failure for $openid_url code $csr->{last_errcode} error $csr->{last_errtext}");
         # we should end up skipping the rest now
@@ -44,7 +44,7 @@ if ( $ARGS{"openid.mode"} ) {
     if ( my $setup_url = $csr->user_setup_url ) {
 
         # redirect/link/popup user to $setup_url
-        RT::Interface::Web::Redirect($setup_url);
+        $m->redirect($setup_url);
     } elsif ( $csr->user_cancel ) {
     } elsif ( my $vident = $csr->verified_identity ) {
         $user = $vident->url;
