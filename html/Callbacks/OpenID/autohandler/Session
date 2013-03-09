@@ -1,5 +1,5 @@
 <%INIT>
-return unless ($RT::EnableOpenId);
+return unless (RT->Config->Get("EnableOpenId"));
 
 use Net::OpenID::Consumer;
 use LWPx::ParanoidAgent;
@@ -17,26 +17,26 @@ if ($ARGS{'openid.sig'}) {
 }
 
 
-my $root_user = RT::User->new($RT::SystemUser);
+my $root_user = RT::User->new(RT->SystemUser);
 my $csr = Net::OpenID::Consumer->new(
     ua              => LWPx::ParanoidAgent->new,
     args            => \%ARGS,
     cache           => Cache::FileCache->new,
-    consumer_secret => 'x'.$RT::DatabasePassword,
-    required_root   => $RT::WebURL,
+    consumer_secret => 'x'.RT->Config->Get("DatabasePassword"),
+    required_root   => RT->Config->Get("WebURL"),
 );
 
 
 if ($openid_url) {
     if ( my $claimed_identity = $csr->claimed_identity("$openid_url")) {
         $check_url = $claimed_identity->check_url(
-                return_to      => $RT::WebURL,
+                return_to      => RT->Config->Get("WebURL"),
                 delayed_return => 1,
-                trust_root     => $RT::WebURL,
+                trust_root     => RT->Config->Get("WebURL"),
                 );
         RT::Interface::Web::Redirect($check_url);
     } else {
-        $RT::Logger->error("OpenID login failure for $openid_url code $csr->{last_errcode} error $csr->{last_errtext}");
+        RT->Logger->error("OpenID login failure for $openid_url code $csr->{last_errcode} error $csr->{last_errtext}");
         # we should end up skipping the rest now
     }
 }
@@ -67,9 +67,9 @@ if ( ( not $session{'CurrentUser'} or not $session{'CurrentUser'}->id ) && ($use
     $session{'CurrentUser'}->LoadByCols( Name => $user );
     $session{'CurrentUser'}->{'OpenID'} = 1;    
     if ( $session{'CurrentUser'}->id ) {
-        $RT::Logger->info($session{'CurrentUser'}->Name ." logged in with openid"); 
+        RT->Logger->info($session{'CurrentUser'}->Name ." logged in with openid"); 
     } else {
-        my $UserObj = RT::User->new($RT::SystemUser);
+        my $UserObj = RT::User->new(RT->SystemUser);
         my ( $id, $msg ) = $UserObj->Create(
             Name => $user,
 
@@ -77,14 +77,14 @@ if ( ( not $session{'CurrentUser'} or not $session{'CurrentUser'}->id ) && ($use
             #EmailAddress => $user->{'email'},
             Privileged => 0,
         );
-        $RT::Logger->info($user ." attempted an account creation with OpenID: $msg");
+        RT->Logger->info($user ." attempted an account creation with OpenID: $msg");
         if ( $UserObj->id ) {
 
             # created the user, now load them as the current user
             $session{'CurrentUser'}->Load( $UserObj->id );
             $session{'i'}++;
             # redirect the user to their preference page to add more info
-            RT::Interface::Web::Redirect( $RT::WebURL . '/User/Prefs.html' );
+            RT::Interface::Web::Redirect( RT->Config->Get("WebURL") . '/User/Prefs.html' );
         } else {
 
             # we couldn't create the user.  abort abort abort!

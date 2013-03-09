@@ -1,5 +1,5 @@
 <%init>
-return unless ($RT::EnableOpenId);
+return unless (RT->Config->Get("EnableOpenId"));
 </%init>
 <h3><&|/l&>Have an <em>OpenID</em>?</&></h3>
 <p><% loc('Log in with it and have a look around.') %></p>
