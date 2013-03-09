@@ -11,9 +11,9 @@ my $check_url;
 
 # Livejournal misencodes responses...
 if ($ARGS{'openid.sig'}) {
-my $sig = $m->cgi_object->param('openid.sig') ||'';
-$sig =~ s/ /+/g;
-$m->cgi_object->param( 'openid.sig' => $sig );
+    my $sig = $m->cgi_object->param('openid.sig') ||'';
+    $sig =~ s/ /+/g;
+    $m->cgi_object->param( 'openid.sig' => $sig );
 }
 
 
