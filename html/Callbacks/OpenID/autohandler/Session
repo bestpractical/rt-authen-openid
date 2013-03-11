@@ -30,7 +30,7 @@ my $csr = Net::OpenID::Consumer->new(
 if ($openid_url) {
     if ( my $claimed_identity = $csr->claimed_identity("$openid_url")) {
         $check_url = $claimed_identity->check_url(
-                return_to      => RT->Config->Get("WebURL"),
+                return_to      => RT->Config->Get("WebURL") . "NoAuth/openid",
                 delayed_return => 1,
                 trust_root     => RT->Config->Get("WebURL"),
                 );
