@@ -21,7 +21,7 @@ no_index:
 requires:
   Cache::FileCache: 0
   LWPx::ParanoidAgent: 0
-  Net::OpenID::Consumer: 0
+  Net::OpenID::Consumer: 1.13
   perl: 5.8.0
 resources:
   license: http://opensource.org/licenses/gpl-license.php
