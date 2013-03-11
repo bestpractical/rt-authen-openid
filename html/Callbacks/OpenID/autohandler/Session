@@ -43,7 +43,7 @@ if ($openid_url) {
     }
 }
 if ( $ARGS{"openid.mode"} ) {
-    if ( my $setup_url = $csr->user_setup_url ) {
+    if ( $csr->setup_needed and my $setup_url = $csr->user_setup_url ) {
 
         # redirect/link/popup user to $setup_url
         $m->redirect($setup_url);
