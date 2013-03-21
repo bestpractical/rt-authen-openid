@@ -7,7 +7,7 @@ license         'GPL version 2';
 all_from        'lib/RT/Authen/OpenID.pm';
 
 requires        'Net::OpenID::Consumer' => '1.13',
-requires        'LWPx::ParanoidAgent';
+requires        'LWP::UserAgent::Paranoid' => '0.92';
 requires        'Cache::FileCache';
 
 auto_install();

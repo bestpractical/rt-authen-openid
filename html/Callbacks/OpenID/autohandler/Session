@@ -1,8 +1,8 @@
 <%INIT>
 return unless (RT->Config->Get("EnableOpenId"));
 
+use LWP::UserAgent::Paranoid;
 use Net::OpenID::Consumer;
-use LWPx::ParanoidAgent;
 use Cache::FileCache;
 
 my $openid_url = ref( $ARGS{openid} ) ? $ARGS{openid}->[0] : $ARGS{openid};
@@ -19,7 +19,7 @@ if ($ARGS{'openid.sig'}) {
 
 my $root_user = RT::User->new(RT->SystemUser);
 my $csr = Net::OpenID::Consumer->new(
-    ua              => LWPx::ParanoidAgent->new,
+    ua              => LWP::UserAgent::Paranoid->new( protocols_allowed => ["http", "https"] ),
     args            => \%ARGS,
     cache           => Cache::FileCache->new,
     consumer_secret => 'x'.RT->Config->Get("DatabasePassword"),
