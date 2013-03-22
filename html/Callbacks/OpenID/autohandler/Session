@@ -19,7 +19,10 @@ if ($ARGS{'openid.sig'}) {
 
 my $root_user = RT::User->new(RT->SystemUser);
 my $csr = Net::OpenID::Consumer->new(
-    ua              => LWP::UserAgent::Paranoid->new( protocols_allowed => ["http", "https"] ),
+    ua              => LWP::UserAgent::Paranoid->new(
+        protocols_allowed => ["http", "https"],
+        request_timeout   => 10, # seconds
+    ),
     args            => \%ARGS,
     cache           => Cache::FileCache->new,
     consumer_secret => 'x'.RT->Config->Get("DatabasePassword"),
