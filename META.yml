@@ -3,11 +3,12 @@ abstract: 'Allows RT to do authentication via a service which supports the OpenI
 author:
   - 'Artur Bergman <sky@crucially.net>, Jesse Vincent <jesse@bestpractical.com>'
 build_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.59
 configure_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.59
 distribution_type: module
-generated_by: 'Module::Install version 1.01'
+dynamic_config: 1
+generated_by: 'Module::Install version 1.06'
 license: gpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -19,8 +20,8 @@ no_index:
     - inc
 requires:
   Cache::FileCache: 0
-  LWPx::ParanoidAgent: 0
-  Net::OpenID::Consumer: 0
+  LWP::UserAgent::Paranoid: 0.92
+  Net::OpenID::Consumer: 1.13
   perl: 5.8.0
 resources:
   license: http://opensource.org/licenses/gpl-license.php

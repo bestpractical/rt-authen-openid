@@ -6,6 +6,9 @@ use warnings;
 
 our $VERSION = '0.04';
 
+require RT::Interface::Web;
+$RT::Interface::Web::is_whitelisted_component{'/NoAuth/openid'} = 1;
+
 =head1 NAME
 
 RT::Authen::OpenID - Allows RT to do authentication via a service which supports the OpenID API
